@@ -1,8 +1,15 @@
 //var current_form = -1l
 // variable num_of_forms is already set in turk.py
+
+/* Deployed */
 url_base = '/FEC/validation/'; 
-url_submit = url_base + 'submit/';  
-url_pages = url_base + 'page/'; 
+
+/* Local */
+url_base = ''; 
+
+
+url_submit = url_base + '/submit/';  
+url_pages = url_base + '/page/'; 
 
 session_id = 0;
 
@@ -149,13 +156,11 @@ function callAjax(data,url, callback){
     $.ajax({
         url: url,
         type: "POST",
-        data: {"result":JSON.stringify(data)},
+        data: {"post":JSON.stringify(data)},
         dataType: "text",
         tryCount : 0,
         retryLimit : 5,
-        success: function(response){
-                        callback(response);
-                }
+        success: callback
            /* response = response_text;
             console.log('Ajax request returned successfully.');
             if (response == "SUCCESS")
@@ -193,7 +198,7 @@ function callAjax(data,url, callback){
                 } 
         }*/
     });
-    
+   
     
 }
 
@@ -205,11 +210,15 @@ row_stats = {};
 pageno = 0;
 username = '';
 debug = {};
+
+
+
 function initialize(n,u){
     pageno = n;
     username = u;
     debug = $("#debug");
     num_records = $(".record").length;
+
 
     $(".record").click(function(){
                 
@@ -220,13 +229,18 @@ function initialize(n,u){
        results = compile_data();
        callAjax(results, url_submit,submit_callback);
     });
+
+    $("#back-button").click(function(){
+       results = compile_data();
+       results["goback"] = true;
+       callAjax(results, url_submit, submit_callback );
+    });
 }
 
 
 function submit_callback(response){
     if (response == "SUCCESS")
         window.location.replace( url_pages +  username + "/");
-        //window.location.replace( url_pages +  username + "/" + (pageno+1));
 }
 
 

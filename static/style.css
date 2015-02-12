@@ -114,3 +114,22 @@ td, th{
 body{
     margin:0px;
 }
+
+
+#back-button{
+    position: absolute;
+    top: 55px;
+}
+
+.inline-button{
+    color : #0033CC; 
+    font-family: sans;    
+    font-size : 1em;
+    text-decoration : underline;
+    cursor: pointer;
+}
+
+
+#button-submit{
+    margin-bottom: 30px;
+}

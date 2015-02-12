@@ -1,6 +1,14 @@
 
 
+/* Deployed */
 url_base = '/FEC/validation/'; 
+
+/* Local */
+url_base = ''; 
+
+
+
+
 url_login_verify = url_base + '/login/'
 console.log(url_login_verify)
 
@@ -35,13 +43,11 @@ function set_bindings(){
      $("#input_coder_password").keypress(function(event){
         if (event.which == 13){
              $("#submit_coder_ID").trigger("click")
-             next();
         }
       });
      $("#input_coder_ID").keypress(function(event){
         if (event.which == 13){
              $("#submit_coder_ID").trigger("click")
-             next();
         }
       });
 }

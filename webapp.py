@@ -2,6 +2,12 @@ from flask import Flask, url_for, request
 from flask import render_template
 import json
 
+# Whether app is deployed locally or
+# on a shared web host.
+deployment = "local"
+#deployment = "web"
+
+
 # Global variable that determines which
 # data set the samples are selected from.
 experiment = "experiment1"
@@ -11,14 +17,16 @@ experiment = "experiment1"
 url_credentials = "./static/credentials.json"
 url_user_data = "./static/user_data.json"
 url_results = "./results/"
+url_data = "./data/"
 
-app = Flask(__name__ , static_url_path = "/home1/naviddia/public_html/FEC/validation/static")
-#app = Flask(__name__, static_url_path="/home1/naviddia/public_html/FEC/validation/static/")
+if deployment == "local":
+    app = Flask(__name__)
+elif deployment == "web":
+    app = Flask(__name__ , static_url_path = "/home1/naviddia/public_html/FEC/validation/static")
+else:
+    raise("Error: must specify deployment mode.")
 
 
-app.route('/')
-def hello_world():
-    return 'Hello World!'
 
 
 def get_static_url(filename):
@@ -36,28 +44,38 @@ def submit():
         return "Error: data must be submitted using the POST method."
 
     try:
-        result = json.loads(request.form['result'])
-        
+        result = json.loads(request.form['post'])
+    except KeyError:
+        print "Error: No 'post' data received."     
+
+    # Both submit and goback requests must include username and pageno
+    try:
         pageno = result['pageno']
         username = result['username']
-        data = result['data']
-        comment = result['comment']
-    except KeyError:
+    except:
         return "Error: submitted form is malformed."
+        
+    if 'goback' in result:
+        update_user_pageno(username,pageno = max(1, pageno - 1))
+        return "SUCCESS"
+    else:
+        try:
+            data = result['data']
+            comment = result['comment']
+        except KeyError:
+            return "Error: submitted form is malformed."
 
-    export_data = {"data":data,"comment":comment}
-
-    filename = url_results + "%s-%s.json" % (username, pageno)
-    f = open(filename ,'w')
-    f.write(json.dumps(export_data, sort_keys = True, indent = 4))
-    f.close()
-    update_user_pageno(username,pageno = pageno + 1)
+        export_data = {"data":data,"comment":comment}
+        filename = url_results + "%s-%s.json" % (username, pageno)
+        f = open(filename ,'w')
+        f.write(json.dumps(export_data, sort_keys = True, indent = 4))
+        f.close()
+        update_user_pageno(username,pageno = pageno + 1)
 
     return 'SUCCESS'
 
 
 
-#@app.route('/page/<username>/<pageno>')
 @app.route('/page/<username>/')
 def page( username = None, pageno=None):
     """
@@ -67,15 +85,17 @@ def page( username = None, pageno=None):
     form back to Flask.
     """
     
+    
     if pageno is None:
         pageno = get_user_pageno(username)
         
-    datafile = 'data/%s/%s.html' % (experiment, pageno)
+    datafile = url_data + '%s/%s.html' % (experiment, pageno)
 
     try:
         f = open(datafile)
         html = f.read()
     except :
+        print "bad data file"
         return render_template('goodbye.html')
     if html == "": 
         return render_template('goodbye.html')
@@ -106,7 +126,7 @@ def login_verify():
     if request.method != "POST": 
         return "Error: data must be submitted using the POST method."
     
-    data = json.loads(request.form['result'])
+    data = json.loads(request.form['post'])
     username = data['username']
     password = data['password']
     
