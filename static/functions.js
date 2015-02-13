@@ -213,6 +213,111 @@ debug = {};
 
 
 
+function get_score_form(x,y,id,initial_state){
+   var score_form = 
+    $('<div/>', {
+    class:"score-form",
+    id: 'score-form-' + id,
+    //href: 'http://google.com',
+    //title: 'Become a Googler',
+    ///rel: 'external',
+    //text: 'Go to Google!'
+    });
+
+
+    var form = $('<form/>');
+    var option1 = $('<input/>', {'type':'radio', 'name': 'score', 'value':'yes','class':'score-radio-button'});
+    var option2 = $('<input/>', {'type':'radio', 'name': 'score', 'value':'maybeyes','class':'score-radio-button'});
+    var option3 = $('<input/>', {'type':'radio', 'name': 'score', 'value':'maybeno','class':'score-radio-button'});
+    var option4 = $('<input/>', {'type':'radio', 'name': 'score', 'value':'no','class':'score-radio-button'});
+
+    console.log(initial_state);
+
+    switch (initial_state){
+        case "score-yes": 
+            option1.attr('checked', 'checked');
+            break;
+        case "score-maybeyes": 
+            option2.attr('checked', 'checked');
+            break;
+        case "score-maybeno": 
+            option3.attr('checked', 'checked');
+            break;
+        case "score-no": 
+            option4.attr('checked', 'checked');
+            break;
+    }
+        
+    
+    option1.click(function(e){
+        // Update the class of the corresponding table row.
+        $('#'+id).removeClass("score-yes score-maybeyes score-maybeno score-no");
+        $('#'+id).addClass("score-yes");
+        $('#score-form-' + id).remove(); 
+        $('#'+id).removeClass('selected');
+    });
+    option2.click(function(e){
+        // Update the class of the corresponding table row.
+        $('#'+id).removeClass("score-yes score-maybeyes score-maybeno score-no");
+        $('#'+id).addClass("score-maybeyes");
+        $('#score-form-' + id).remove(); 
+        $('#'+id).removeClass('selected');
+    });
+    option3.click(function(e){
+        // Update the class of the corresponding table row.
+        $('#'+id).removeClass("score-yes score-maybeyes score-maybeno score-no");
+        $('#'+id).addClass("score-maybeno");
+        $('#score-form-' + id).remove(); 
+        $('#'+id).removeClass('selected');
+    });
+    option4.click(function(e){
+        // Update the class of the corresponding table row.
+        $('#'+id).removeClass("score-yes score-maybeyes score-maybeno score-no");
+        $('#'+id).addClass("score-no");
+        $('#score-form-' + id).remove(); 
+        $('#'+id).removeClass('selected');
+    });
+
+
+    
+    var label1 = $('<div/>', {'text':'Yes', 'class':'score-label'});
+    var label2 = $('<div/>', {'text':'Maybe Yes', 'class':'score-label'});
+    var label3 = $('<div/>', {'text':'Maybe No', 'class':'score-label'});
+    var label4 = $('<div/>', {'text':'No', 'class':'score-label'});
+
+    var container_main = $('<div/>' , {'class':'score-input-wrapper'});
+    container_main.appendTo(form);
+ 
+    var container1 = $('<div/>' , {'class':'score-input-container-1'});
+    var container2 = $('<div/>' , {'class':'score-input-container-2'});
+    var container3 = $('<div/>' , {'class':'score-input-container-3'});
+    var container4 = $('<div/>' , {'class':'score-input-container-4'});
+    
+    container1.click(function(e){option1.trigger('click');});
+    container2.click(function(e){option2.trigger('click');});
+    container3.click(function(e){option3.trigger('click');});
+    container4.click(function(e){option4.trigger('click');});
+
+    option1.appendTo(container1); label1.appendTo(container1); container1.appendTo(container_main); 
+    option2.appendTo(container2); label2.appendTo(container2); container2.appendTo(container_main); 
+    option3.appendTo(container3); label3.appendTo(container3); container3.appendTo(container_main); 
+    option4.appendTo(container4); label4.appendTo(container4); container4.appendTo(container_main); 
+   
+    form.appendTo(score_form);
+    form.show();
+     
+    score_form.css({"top" : (y-10) ,"left" : (x-10) }); 
+    score_form.mouseleave(function(e){
+        $(this).hide();        
+        $(this).remove();
+        $('#'+id).removeClass('selected');
+    });
+    score_form.appendTo('html'); 
+    score_form.show();
+    console.log(""+ x + "," + y);
+    
+}
+
 function initialize(n,u){
     pageno = n;
     username = u;
@@ -220,9 +325,26 @@ function initialize(n,u){
     num_records = $(".record").length;
 
 
-    $(".record").click(function(){
+    $(".record").click(function(e){
+                var mouse_x = e.pageX; 
+                var mouse_y = e.pageY; 
+                var row_top = $(this).position().top; 
+                var id = $(this).attr('id');
                 
-                $(this).toggleClass("selected");
+                $(this).addClass('selected');
+                var current_state;
+                if ($(this).hasClass('score-yes'))
+                    current_state = "score-yes";
+                    
+                if ($(this).hasClass('score-maybeyes'))
+                    current_state = "score-maybeyes";
+                if ($(this).hasClass('score-maybeno'))
+                    current_state = "score-maybeno";
+                if ($(this).hasClass('score-no'))
+                    current_state = "score-no";
+                    
+                get_score_form(mouse_x,mouse_y,id,current_state);
+                //$(this).toggleClass("selected");
     });
 
     $("#button-submit").click(function(){
@@ -252,8 +374,19 @@ function compile_data(){
         var id = $(this).find(".id").text();
         var identity = $(this).find(".identity").text();
         var is_focus = 0+$(this).hasClass("focus_identity");
-        var is_selected = 0+$(this).hasClass("selected");
-        result_data['data'][id] = [identity,is_focus,is_selected]; 
+        //var is_selected = 0+$(this).hasClass("selected");
+        var current_state;
+            if ($(this).hasClass('score-yes'))
+                current_state = 1;
+                
+            if ($(this).hasClass('score-maybeyes'))
+                current_state = 2;
+            if ($(this).hasClass('score-maybeno'))
+                current_state = 3;
+            if ($(this).hasClass('score-no'))
+                current_state = 4;
+        
+        result_data['data'][id] = [identity,is_focus,current_state]; 
         //console.log(id,identity,is_focus,is_selected);
     });
     var comment_text = $("#comments_textarea").val();

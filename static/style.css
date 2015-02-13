@@ -14,6 +14,12 @@ td, th{
    
 }
 
+
+tr:hover{
+    border:solid 1px #888;
+    border-style: double;
+}
+
 .focus_identity {
     background:#FF9900; 
     /*display:inline-block;*/
@@ -25,7 +31,8 @@ td, th{
 
 /* A record that is selected by the user */
 .selected{
-    background: #ececec;
+    border:solid 1px #222;
+    border-style: double;;
 }
 
 
@@ -132,4 +139,88 @@ body{
 
 #button-submit{
     margin-bottom: 30px;
+}
+
+
+
+.score-form{
+    position:absolute;
+    border:solid thin #ddd;
+    background: #fff;
+    font-family: sans;
+}
+
+
+.score-radio-button{
+    /*display:block;*/
+    float:left;
+    margin-top:0px;
+    margin-bottom:10px;
+    margin-left: 0em;
+    clear:both;
+
+}
+
+.score-label{
+
+    display:block;
+    float:left;
+    font-size:0.7em;
+    margin-top:0px;
+    margin-bottom:10px;
+}
+
+
+.score-yes{
+    background : #99FF66;
+}
+
+.score-maybeyes{
+    background:#FFFF99;
+}
+
+.score-maybeno{
+    background: #ededed;
+}
+
+.score-no{
+    background: #fff;
+}
+
+
+.score-input-container-1,
+.score-input-container-2,
+.score-input-container-3,
+.score-input-container-4{
+    display:table;
+    padding:3px;
+    width:100px;
+    border:solid thin #fff;
+}
+.score-input-container-1:hover,
+.score-input-container-2:hover,
+.score-input-container-3:hover,
+.score-input-container-4:hover{
+    cursor:pointer;
+    border:solid thin #ddd;
+}
+
+
+.score-input-wrapper{
+    width:106px;
+}
+
+
+
+.score-input-container-1{
+    background : #99FF66;
+}
+.score-input-container-2{
+    background:#FFFF99;
+}
+.score-input-container-3{
+    background: #ededed;
+}
+.score-input-container-4 {
+    background: #fff;
 }
