@@ -373,7 +373,7 @@ function compile_data(){
     records.each(function(index,element){
         var id = $(this).find(".id").text();
         var identity = $(this).find(".identity").text();
-        var is_focus = 0+$(this).hasClass("focus_identity");
+        var is_focus = 0+$(this).hasClass("ismain");
         //var is_selected = 0+$(this).hasClass("selected");
         var current_state;
             if ($(this).hasClass('score-yes'))
