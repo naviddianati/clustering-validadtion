@@ -230,3 +230,36 @@ body{
     /*font-weight:bold;*/
 }
 
+/*The box that shows auxilliary data to
+aid with the coding*/
+#aux-data{
+	height:20em;
+    font-family: sans-serif;
+    border: solid thin #999;
+    font-size: 12px; 
+    width:100%;
+    padding-top:60px;
+    padding:1em 2px 1em 2px ;
+    float:left;
+    margin-bottom:1em;
+    word-wrap: break-word;  
+}
+
+.aux-data-item-title{
+	font-weight:bold;
+    margin-left:1em;
+}
+
+.aux-data-item-content{
+	margin-left:2em;
+	clear:both;
+    margin-bottom:1em;
+    margin-top:0.5em;
+}
+
+
+
+
+
+
+

@@ -213,15 +213,16 @@ debug = {};
 
 
 
-function get_score_form(x,y,id,initial_state){
-   var score_form = 
-    $('<div/>', {
-    class:"score-form",
-    id: 'score-form-' + id,
-    //href: 'http://google.com',
-    //title: 'Become a Googler',
-    ///rel: 'external',
-    //text: 'Go to Google!'
+function get_score_form(x,y,id,identity,groupselect, initial_state){
+    /* */
+    var score_form = 
+        $('<div/>', {
+        class:"score-form",
+        id: 'score-form-' + id
+        //href: 'http://google.com',
+        //title: 'Become a Googler',
+        ///rel: 'external',
+        //text: 'Go to Google!'
     });
 
 
@@ -233,6 +234,9 @@ function get_score_form(x,y,id,initial_state){
 
     console.log(initial_state);
 
+    /* Set the initial checked state of the inputs
+     * based on the initial state of the associated record.
+     */
     switch (initial_state){
         case "score-yes": 
             option1.attr('checked', 'checked');
@@ -250,32 +254,71 @@ function get_score_form(x,y,id,initial_state){
         
     
     option1.click(function(e){
-        // Update the class of the corresponding table row.
-        $('#'+id).removeClass("score-yes score-maybeyes score-maybeno score-no");
-        $('#'+id).addClass("score-yes");
-        $('#score-form-' + id).remove(); 
-        $('#'+id).removeClass('selected');
+    	if (groupselect){
+    		// Update the class of all rows with the same identity.
+    		$('.'+identity).removeClass("score-yes score-maybeyes score-maybeno score-no");
+	        $('.'+identity).addClass("score-yes");
+	        $('#score-form-' + id).remove(); 
+	        $('.'+identity).removeClass('selected');
+    	}
+    	else{
+    		// Update the class of the corresponding table row.
+	        $('#'+id).removeClass("score-yes score-maybeyes score-maybeno score-no");
+	        $('#'+id).addClass("score-yes");
+	        $('#score-form-' + id).remove(); 
+	        $('#'+id).removeClass('selected');
+	    }
     });
     option2.click(function(e){
-        // Update the class of the corresponding table row.
-        $('#'+id).removeClass("score-yes score-maybeyes score-maybeno score-no");
-        $('#'+id).addClass("score-maybeyes");
-        $('#score-form-' + id).remove(); 
-        $('#'+id).removeClass('selected');
+    	if (groupselect){
+    		// Update the class of all rows with the same identity.
+    		$('.'+identity).removeClass("score-yes score-maybeyes score-maybeno score-no");
+	        $('.'+identity).addClass("score-maybeyes");
+	        $('#score-form-' + id).remove(); 
+	        $('.'+identity).removeClass('selected');
+    	}
+    	else{
+    		// Update the class of the corresponding table row.
+	        $('#'+id).removeClass("score-yes score-maybeyes score-maybeno score-no");
+	        $('#'+id).addClass("score-maybeyes");
+	        $('#score-form-' + id).remove(); 
+	        $('#'+id).removeClass('selected');
+	    }
+    	
     });
     option3.click(function(e){
-        // Update the class of the corresponding table row.
-        $('#'+id).removeClass("score-yes score-maybeyes score-maybeno score-no");
-        $('#'+id).addClass("score-maybeno");
-        $('#score-form-' + id).remove(); 
-        $('#'+id).removeClass('selected');
+    	if (groupselect){
+    		// Update the class of all rows with the same identity.
+    		$('.'+identity).removeClass("score-yes score-maybeyes score-maybeno score-no");
+	        $('.'+identity).addClass("score-maybeno");
+	        $('#score-form-' + id).remove(); 
+	        $('.'+identity).removeClass('selected');
+    	}
+    	else{
+    		// Update the class of the corresponding table row.
+	        $('#'+id).removeClass("score-yes score-maybeyes score-maybeno score-no");
+	        $('#'+id).addClass("score-maybeno");
+	        $('#score-form-' + id).remove(); 
+	        $('#'+id).removeClass('selected');
+	    }
+
     });
     option4.click(function(e){
-        // Update the class of the corresponding table row.
-        $('#'+id).removeClass("score-yes score-maybeyes score-maybeno score-no");
-        $('#'+id).addClass("score-no");
-        $('#score-form-' + id).remove(); 
-        $('#'+id).removeClass('selected');
+    	if (groupselect){
+    		// Update the class of all rows with the same identity.
+    		$('.'+identity).removeClass("score-yes score-maybeyes score-maybeno score-no");
+	        $('.'+identity).addClass("score-no");
+	        $('#score-form-' + id).remove(); 
+	        $('.'+identity).removeClass('selected');
+    	}
+    	else{
+    		// Update the class of the corresponding table row.
+	        $('#'+id).removeClass("score-yes score-maybeyes score-maybeno score-no");
+	        $('#'+id).addClass("score-no");
+	        $('#score-form-' + id).remove(); 
+	        $('#'+id).removeClass('selected');
+	    }
+
     });
 
 
@@ -324,12 +367,17 @@ function initialize(n,u){
     debug = $("#debug");
     num_records = $(".record").length;
 
-
+    /* Set the mouse and keyabord even handlers for all records*/
     $(".record").click(function(e){
                 var mouse_x = e.pageX; 
                 var mouse_y = e.pageY; 
                 var row_top = $(this).position().top; 
                 var id = $(this).attr('id');
+                var identity = $(this).attr('class').match(/\b(identity-.+)\s/)[1];
+                console.log(identity);
+                var groupselect = (e.shiftKey);
+                console.log(e.shiftKey );
+
                 
                 $(this).addClass('selected');
                 var current_state;
@@ -343,7 +391,7 @@ function initialize(n,u){
                 if ($(this).hasClass('score-no'))
                     current_state = "score-no";
                     
-                get_score_form(mouse_x,mouse_y,id,current_state);
+                get_score_form(mouse_x,mouse_y,id,identity,groupselect,current_state);
                 //$(this).toggleClass("selected");
     });
 

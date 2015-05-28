@@ -3,4 +3,6 @@ lib/*
 include/*
 results/*
 data/*
+.project
+.pydevproject
 
