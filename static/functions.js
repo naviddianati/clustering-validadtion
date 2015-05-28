@@ -5,7 +5,7 @@
 url_base = '/FEC/validation'; 
 
 /* Local */
-//url_base = ''; 
+url_base = ''; 
 
 
 url_submit = url_base + '/submit/';  

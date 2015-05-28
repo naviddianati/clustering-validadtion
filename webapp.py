@@ -5,8 +5,8 @@ import os
 
 # Whether app is deployed locally or
 # on a shared web host.
-#deployment = "local"
-deployment = "web"
+deployment = "local"
+#deployment = "web"
 
 
 # Global variable that determines which
