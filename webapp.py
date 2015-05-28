@@ -5,8 +5,8 @@ import os
 
 # Whether app is deployed locally or
 # on a shared web host.
-deployment = "local"
-#deployment = "web"
+#deployment = "local"
+deployment = "web"
 
 
 # Global variable that determines which
@@ -99,13 +99,13 @@ def page(username=None, pageno=None):
 
     datafile = url_data + '%s.html' % ( pageno)
     auxdatafile = url_data + '%s-aux.html' % ( pageno)
-    print datafile
+    #print datafile
 
     try:
         f = open(datafile)
         html = f.read()
     except :
-        print "bad data file"
+        #print "bad data file"
         return render_template('goodbye.html')
 
 
@@ -113,7 +113,7 @@ def page(username=None, pageno=None):
         f = open(auxdatafile)
         aux_html = f.read()
     except :
-        print "bad data file"
+        #print "bad data file"
         return render_template('goodbye.html')
 
     if html == "":
@@ -153,7 +153,7 @@ def login_verify():
     data = json.loads(request.form['post'])
     username = data['username']
     password = data['password']
-
+    
     if verify_user_pass(username, password):
         return "SUCCESS"
     else:
@@ -222,7 +222,7 @@ def update_user_pageno(username, pageno):
 
 
 def save_to_file(s, filename):
-    f = open(filename, 'w')
+    f = open(filename, 'a')
     f.write(s)
     f.close()
 

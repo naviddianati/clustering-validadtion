@@ -4,12 +4,12 @@
 url_base = '/FEC/validation/'; 
 
 /* Local */
-url_base = ''; 
+//url_base = ''; 
 
 
 
 
-url_login_verify = url_base + '/login/'
+url_login_verify = url_base + 'login/'
 console.log(url_login_verify)
 
 
@@ -20,7 +20,8 @@ function login_callback(response){
         window.location.replace(url_pages + username + "/");
     }
     else{
-        greeting_message = $("._greeting_message") 
+        //$("html").html(response);
+        greeting_message = $("._greeting_message");
         greeting_message.hide();
         greeting_message.html("Wrong username and password combination. Please try again.");
         greeting_message.fadeIn();
