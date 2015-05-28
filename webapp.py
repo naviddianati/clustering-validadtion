@@ -40,7 +40,8 @@ else:
 def get_static_url(filename):
     return  url_for('static', filename=filename)
 
-
+def Log(msg):
+    save_to_file(msg,'log.txt')
 
 @app.route('/submit/', methods=['POST'])
 def submit():
@@ -54,9 +55,10 @@ def submit():
     try:
         result = json.loads(request.form['post'])
     except KeyError:
-        print "Error: No 'post' data received."
+        Log( "Error: No 'post' data received.")
 
     # Both submit and goback requests must include username and pageno
+    save_to_file(json.dumps(result),'log.txt')
     try:
         pageno = result['pageno']
         username = result['username']
@@ -68,7 +70,9 @@ def submit():
         return "SUCCESS"
     else:
         try:
-            data = result['data']
+            data_initial = result['initial']
+            data_final = result['final']
+            data = {'initial':data_initial,'final':data_final}
             comment = result['comment']
         except KeyError:
             return "Error: submitted form is malformed."

@@ -149,8 +149,6 @@ function show_next_form(current_form){
 
 
 
-
-
 function callAjax(data,url, callback){
     my_delay = 1000;
     $.ajax({
@@ -210,7 +208,7 @@ row_stats = {};
 pageno = 0;
 username = '';
 debug = {};
-
+results_initial = {};
 
 
 function get_score_form(x,y,id,identity,groupselect, initial_state){
@@ -366,6 +364,9 @@ function initialize(n,u){
     username = u;
     debug = $("#debug");
     num_records = $(".record").length;
+    
+    // Results object with the initial state of the records.
+    results_initial = get_state();
 
     /* Set the mouse and keyabord even handlers for all records*/
     $(".record").click(function(e){
@@ -403,7 +404,7 @@ function initialize(n,u){
     $("#back-button").click(function(){
        results = compile_data();
        results["goback"] = true;
-       callAjax(results, url_submit, submit_callback );
+       callAjax(results,  url_submit, submit_callback );
     });
 }
 
@@ -414,14 +415,25 @@ function submit_callback(response){
 }
 
 
-
 function compile_data(){
-    records = $(".record");
     var result_data = {'username': username, 'pageno': pageno, 'data':{} , 'comment':''};
+    var comment_text = $("#comments_textarea").val();
+    result_data['comment'] = comment_text;
+
+    result_data['initial'] = results_initial;
+    result_data['final'] = get_state();
+    console.log(result_data);
+    return result_data;
+}
+
+
+function get_state(){
+    records = $(".record");
+    var result_data = {};
     records.each(function(index,element){
         var id = $(this).find(".id").text();
         var identity = $(this).find(".identity").text();
-        var is_focus = 0+$(this).hasClass("ismain");
+        //var is_focus = 0+$(this).hasClass("ismain");
         //var is_selected = 0+$(this).hasClass("selected");
         var current_state;
             if ($(this).hasClass('score-yes'))
@@ -434,11 +446,9 @@ function compile_data(){
             if ($(this).hasClass('score-no'))
                 current_state = 4;
         
-        result_data['data'][id] = [identity,is_focus,current_state]; 
+        result_data[id] = [identity,current_state]; 
         //console.log(id,identity,is_focus,is_selected);
     });
-    var comment_text = $("#comments_textarea").val();
-    result_data['comment'] = comment_text;
     //console.log(result_data);
 
     return result_data;
