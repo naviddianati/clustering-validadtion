@@ -4,13 +4,13 @@ import json
 
 # Whether app is deployed locally or
 # on a shared web host.
-deployment = "local"
-#deployment = "web"
+#deployment = "local"
+deployment = "web"
 
 
 # Global variable that determines which
 # data set the samples are selected from.
-experiment = "experiment1"
+experiment = "experiment4"
 
 # Where the usernames and passwords are stored
 # as a dictionary in json format.

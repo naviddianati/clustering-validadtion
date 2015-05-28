@@ -2,10 +2,10 @@
 // variable num_of_forms is already set in turk.py
 
 /* Deployed */
-url_base = '/FEC/validation/'; 
+url_base = '/FEC/validation'; 
 
 /* Local */
-url_base = ''; 
+//url_base = ''; 
 
 
 url_submit = url_base + '/submit/';  

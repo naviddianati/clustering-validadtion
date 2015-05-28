@@ -4,7 +4,7 @@
 url_base = '/FEC/validation/'; 
 
 /* Local */
-url_base = ''; 
+//url_base = ''; 
 
 
 
