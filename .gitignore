@@ -6,4 +6,5 @@ data/*
 .project
 .pydevproject
 *.pyc
+log.txt
 
